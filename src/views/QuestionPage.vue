@@ -24,7 +24,7 @@ onMounted(async () => {
     id: answers.value.length,
     correct: true,
     answer: question.value.correct_answer,
-    points: quesiton.value.difficulty === 'easy' ? 10 : quesiton.value.difficulty === 'medium' ? 20 : 30,
+    points: question.value.difficulty === 'easy' ? 10 : quesiton.value.difficulty === 'medium' ? 20 : 30,
   })
 
   question.value.incorrect_answers.map((wrong_answer) => {
