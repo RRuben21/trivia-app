@@ -6,7 +6,7 @@ import BaseTitle from '@/components/BaseTitle.vue';
 import DifficultyChip from '@/components/DifficultyChip.vue';
 import MainScore from '@/components/MainScore.vue';
 import useScore from '@/composables/useScore';
-import router from '@/router';
+import router from "@/router"
 
 const api = useAPI()
 const question = ref(null)
@@ -24,7 +24,7 @@ onMounted(async () => {
     id: answers.value.length,
     correct: true,
     answer: question.value.correct_answer,
-    points: question.value.difficulty === 'easy' ? 10 : quesiton.value.difficulty === 'medium' ? 20 : 30,
+    points: question.value.difficulty === 'easy' ? 10 : question.value.difficulty === 'medium' ? 20 : 30,
   })
 
   question.value.incorrect_answers.map((wrong_answer) => {
@@ -34,8 +34,8 @@ onMounted(async () => {
       answer: wrong_answer,
       points: -5,
     })
-  })
 
+  })
 
   answers.value = shuffle(answers.value)
   // console.log(question.value)
@@ -43,7 +43,7 @@ onMounted(async () => {
 })
 
 const shuffle = (array) => {
-  for (let i = array.length - 1; i > 0; i--){
+  for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     //swap
     [array[i], array[j]] = [array[j], array[i]];
@@ -52,7 +52,7 @@ const shuffle = (array) => {
   return array
 }
 
-//handel answer choices and award points
+//handle answer choices and award points
 const handleAnswer = (points) => {
   changeScore(points)
 
@@ -71,33 +71,33 @@ const handleAnswer = (points) => {
 </script>
 
 
+
 <template>
-  <div v-if="question" class="flex h-full w-full flex-col items-center gap-8 p-10">
-    <BaseTitle>
-      <MainScore></MainScore> &nbsp;
-      <span class="font-bold" :class="notification === 'CORRECT' ? 'text-green-500' : 'text-red-500'">
+
+<div v-if="question" class="flex h-full w-full flex-col items-center gap-8 p-10">
+  <BaseTitle>
+    <MainScore></MainScore> &nbsp; 
+    <span class="font-bold" :class="notification === 'CORRECT' ? 'text-green-500' : 'text-red-500'">
       {{ notification }}
-      </span>
-    
-    </BaseTitle>
-    <!-- {{ question.question }} -->
+    </span>
+  </BaseTitle>
+  <!-- {{  question.question }} -->
 
-    <div v-html="question.question" class="text-center text-2xl font-bold"></div>
-    <div class="grid w-full flex-grow grid-cols-2 gap-8">
+  <div v-html="question.question" class="text-center text-2xl font-bold"></div>
+  <div class="grid w-full flex-grow grid-cols-2 gap-8">
+      <div v-for="answer in answers" 
+      v-html="answer.answer" 
+      :key="answer.id"
+      @click="handleAnswer(answer.points)"
+      class="bg-green-500 flex items-center justify-center text-4xl rounded-lg text-white py-10 px-2 ">
 
-    <div v-for="answer in answers" 
-    v-html="answer.answer"
-     :key="answer.id" 
-     @click = "handleAnswer(answer.points)"
-     class="bg-green-500 flex items-center justify-center text-4xl rounded-lg  text-white py-10 px-2"></div>
       </div>
 
-      <DifficultyChip :difficulty="question.difficulty">
-
-      </DifficultyChip>
-    </div>
-  
-  <div v-else class="">
-    Loading...
   </div>
+  <DifficultyChip :difficulty="question.difficulty"></DifficultyChip>
+</div>
+<div v-else class="">
+  Loading...
+</div>
+
 </template>
